@@ -58,11 +58,10 @@ class MyPasswordManager(QMainWindow):
             self.password_table.setCellWidget(row, 2, show_button)
 
     def showPassword(self, row):
-        password_item = self.password_table.item(row, 1)
-        password_text = password_item.text()
+        conn = sqlite3.connect("passwords.db")
+        cursor = conn.cursor()
+        password_text = cursor.execute(f"SELECT password FROM entries WHERE rowid = {row+1}").fetchone()[0]
         print("showPassword() called")
-        password_item = self.password_table.item(row, 1)
-        password_text = password_item.text()
         dialog = QDialog(self)
         dialog.setWindowTitle("パスワード表示")
         dialog.setGeometry(200, 200, 300, 100)
